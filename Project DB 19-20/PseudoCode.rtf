@@ -1,0 +1,27 @@
+PlayerFlied: 
+    - Interactable field to place ships on  (//// ShipPlacement)
+    - Sunk state                            (Change sprite)
+    
+AIField:
+    - Randomized ship placement             (Retry placing a ship if the placement was invalid)
+    - Interactable field to fire at         (Clickable fire action)
+    - Indicators for hits and misses        (simple red dots or corsses to mark hits and misses)
+    - Show ship when sunk                   (Get ship state, show when sunk)
+
+ShipPlacement:
+    - (Player) Drag and drop ships          (//// D&DShips)
+    - (AI) Randomized placement
+    - Make sure ships dont overlap          (Get applied fields, check if used)
+    
+D&DShips:                                   (source 1)
+    - Rotation (90°)                        (source 2)
+    - Preview                               (source 1 ?)
+    - Limit amount of ships per ship type   (simple if statement)
+    - force player to use all ships         (simple if statement)
+
+Store enemy field data in Integer Array.     <0 = "Empty", 1 = "Ship", 2 = "Hit",3 = "Miss">
+Store player field data in Integer Array.    <0 = "Empty", 1 = "Ship", 2 = "Hit",3 = "Miss">
+
+Sources:
+    - 1: https://www.vb-helper.com/howto_net_drag_drop_image.html
+    - 2: http://www.vbforums.com/showthread.php?820409-How-can-I-rotate-a-bitmap
