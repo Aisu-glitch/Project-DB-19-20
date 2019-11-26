@@ -30,8 +30,13 @@ Partial Class frmMenu
 		Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
 		Me.BackColor = System.Drawing.SystemColors.MenuHighlight
 		Me.ClientSize = New System.Drawing.Size(800, 450)
+		Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
+		Me.MaximizeBox = False
+		Me.MinimizeBox = False
 		Me.Name = "frmMenu"
-		Me.Text = "Form1"
+		Me.ShowIcon = False
+		Me.Text = "Menu"
+		Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
 		Me.ResumeLayout(False)
 
 	End Sub

@@ -4,6 +4,8 @@
 	Dim Discs As SortedList(Of String, Graphics) = New SortedList(Of String, Graphics)
 
 	Private Sub frm4OpEenRij_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+		Me.MaximumSize = Me.Size
+		Me.MinimumSize = Me.Size
 		Timer.Enabled = True
 		GameRun = True
 		'*** Add all drop fields to triggers
