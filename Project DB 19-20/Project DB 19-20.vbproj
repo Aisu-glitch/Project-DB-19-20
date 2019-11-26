@@ -109,8 +109,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmBattleship.resx">
+      <DependentUpon>frmBattleship.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmConnect4.resx">
       <DependentUpon>frmConnect4.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMenu.resx">
+      <DependentUpon>frmMenu.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
