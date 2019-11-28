@@ -1,4 +1,5 @@
 ﻿Public Class frmBattleship
+    Dim backupmap
     Private Sub frmBattleship_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim map As Bitmap = New Bitmap(pbxTest.Image, pbxTest.Width, pbxTest.Height)
         Dim Pth As New System.Drawing.Drawing2D.GraphicsPath
@@ -14,25 +15,37 @@
         pbxTest.Region = Reg
         pbxTest.AllowDrop = True
         PictureBox1.AllowDrop = True
+        For Each box As PictureBox In Me.Controls
+            AddHandler box.DragEnter, AddressOf dd_enter
+            AddHandler box.DragLeave, AddressOf dd_leave
+            AddHandler box.MouseDown, AddressOf pbxTest_Click
+        Next
+
     End Sub
 
-    Private Sub pbxTest_Click(sender As PictureBox, e As EventArgs) Handles pbxTest.MouseDown, PictureBox1.MouseDown
+    Private Sub pbxTest_Click(sender As PictureBox, e As EventArgs)
         If sender.Image IsNot Nothing Then
             sender.DoDragDrop(New Bitmap(sender.Image), DragDropEffects.Move)
         End If
     End Sub
 
-    Private Sub PictureBox1_dd_enter(sender As PictureBox, e As DragEventArgs) Handles PictureBox1.DragEnter, pbxTest.DragEnter
+    Private Sub dd_enter(sender As PictureBox, e As DragEventArgs)
         If (e.Data.GetDataPresent(DataFormats.Bitmap)) Then
             '---determine if this is a copy or move---
             e.Effect = DragDropEffects.Move
-            sender.Image = e.Data.GetData(DataFormats.Bitmap)
+            If sender.Image Is Nothing Then
+                sender.Image = e.Data.GetData(DataFormats.Bitmap)
+            End If
         End If
     End Sub
 
-    Private Sub PictureBox1_dd_leave(sender As PictureBox, e As EventArgs) Handles PictureBox1.DragLeave, pbxTest.DragLeave
-        sender.Image = Nothing
+    Private Sub dd_leave(sender As PictureBox, e As EventArgs, de As DragEventArgs)
+        If sender IsNot de.Data.GetData(D) Then
+            sender.Image = Nothing
+        End If
     End Sub
 
+    'https://stackoverflow.com/questions/51560830/show-dragged-item-while-dragging-vb-net
+    'http://www.vbforums.com/showthread.php?262883-Determining-the-source-object-in-a-drag-and-drop
 
 End Class
