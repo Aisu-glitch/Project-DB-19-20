@@ -7,28 +7,52 @@
 		Me.MaximumSize = Me.Size
 		Me.MinimumSize = Me.Size
 		Timer.Enabled = True
-		GameRun = True
-		'*** Add all drop fields to triggers
-		For Each tb As TextBox In grbSelectie.Controls
-			AddHandler tb.MouseEnter, AddressOf grpSelectie_TextBox_MouseEnter
-			AddHandler tb.MouseLeave, AddressOf grpSelectie_TextBox_MouseLeave
-			AddHandler tb.MouseClick, AddressOf grpSelectie_TextBox_MouseClick
-		Next
-		'*** Make all playfields round
-		Dim Pth As New System.Drawing.Drawing2D.GraphicsPath
-		Pth.AddEllipse(New Rectangle(0, 0, 50, 50))
-		Dim Reg As New Region(Pth)
+        GameRun = True
+        Dim tb As TextBox
+        Dim bt As Button
+        For Each tb In grbSelectie.Controls
+            AddHandler tb.MouseEnter, AddressOf grpSelectie_TextBox_MouseEnter
+            AddHandler tb.MouseLeave, AddressOf grpSelectie_TextBox_MouseLeave
+            AddHandler tb.MouseClick, AddressOf grpSelectie_TextBox_MouseClick
+        Next
+        '*** Make all playfields round
+        Dim Pth As New System.Drawing.Drawing2D.GraphicsPath
+        Dim Reg As New Region(Pth)
 		For Each obj As Object In Me.Controls
-			If TypeOf obj Is GroupBox Then
-				Dim gb As GroupBox = obj
-				For Each tb As TextBox In gb.Controls
-					tb.Region = Reg
-				Next
-			End If
-			If TypeOf obj Is TextBox Then
-				obj.Region = Reg
-			End If
-		Next
+            If TypeOf obj Is GroupBox Then
+                Pth.AddEllipse(New Rectangle(0, 0, 50, 50))
+                Reg = New Region(Pth)
+                Dim gb As GroupBox = obj
+                For Each tb In gb.Controls
+                    tb.Region = Reg
+                Next
+            End If
+            If TypeOf obj Is TextBox Then
+                Pth.AddEllipse(New Rectangle(0, 0, 50, 50))
+                Reg = New Region(Pth)
+                obj.Region = Reg
+            End If
+            If TypeOf obj Is Button Then
+                bt = obj
+                If bt.BackgroundImage IsNot Nothing Then
+                    Dim map As Bitmap = New Bitmap(bt.BackgroundImage, bt.Width, bt.Height)
+                    '*** Voor elke pixel
+                    For I = 1 To map.Width - 1
+                        For J = 1 To map.Height - 1
+                            '*** Als de pixel leeg is
+                            If map.GetPixel(I, J).ToArgb <> 0 Then
+                                '*** Teken hem bij de graphische tekening
+                                Pth.AddRectangle(New Rectangle(I, J, 1, 1))
+                            End If
+                        Next
+                    Next
+                    Reg = New Region(Pth)
+                    bt.Region = Reg
+                End If
+
+            End If
+            Pth.Reset()
+        Next
 		'*** Start global randomizer
 		Randomize()
 	End Sub
