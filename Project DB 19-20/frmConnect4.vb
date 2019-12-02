@@ -3,7 +3,8 @@
 	Dim GameRun As Boolean
 	Dim Discs As SortedList(Of String, Graphics) = New SortedList(Of String, Graphics)
 
-	Private Sub frm4OpEenRij_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    '*** On Load
+    Private Sub frm4OpEenRij_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 		Me.MaximumSize = Me.Size
 		Me.MinimumSize = Me.Size
 		Timer.Enabled = True
@@ -18,7 +19,7 @@
         '*** Make all playfields round
         Dim Pth As New System.Drawing.Drawing2D.GraphicsPath
         Dim Reg As New Region(Pth)
-		For Each obj As Object In Me.Controls
+        For Each obj As Object In Me.Controls
             If TypeOf obj Is GroupBox Then
                 Pth.AddEllipse(New Rectangle(0, 0, 50, 50))
                 Reg = New Region(Pth)
@@ -35,7 +36,7 @@
             If TypeOf obj Is Button Then
                 bt = obj
                 If bt.BackgroundImage IsNot Nothing Then
-                    Dim map As Bitmap = New Bitmap(bt.BackgroundImage, bt.Width, bt.Height)
+                    Dim map As Bitmap = New Bitmap(bt.BackgroundImage, bt.Width - 1, bt.Height - 1)
                     '*** Voor elke pixel
                     For I = 1 To map.Width - 1
                         For J = 1 To map.Height - 1
@@ -48,21 +49,24 @@
                     Next
                     Reg = New Region(Pth)
                     bt.Region = Reg
+                    bt.BackgroundImage = Nothing
                 End If
-
+                If BackgroundImage IsNot Nothing Then
+                    bt.Image = New Bitmap(bt.Image, bt.Width - 1, bt.Height - 1)
+                End If
             End If
             Pth.Reset()
         Next
-		'*** Start global randomizer
-		Randomize()
+        '*** Start global randomizer
+        Randomize()
 	End Sub
-
-	Private Sub Timer_Timer() Handles Timer.Tick
+    '*** animation step timer
+    Private Sub Timer_Timer() Handles Timer.Tick
 		'*** Animation trigger
 		DropDisc()
 	End Sub
-
-	Private Sub AddDisc(sender As Object)
+    '*** Sub To add discs to animation
+    Private Sub AddDisc(sender As Object)
 		'*** Clearing Disc list
 		Discs.Clear()
 		'*** declaration of variables
@@ -86,8 +90,8 @@
 			Next
 		Next
 	End Sub
-
-	Private Sub DropDisc()
+    '*** Animation function for discs
+    Private Sub DropDisc()
 		'*** Declaration of the variables
 		Dim TempDiscs As SortedList(Of String, Graphics) = New SortedList(Of String, Graphics)
 		Dim Xstart, Ystart As Integer
@@ -135,8 +139,8 @@
 		Next
 		TempDiscs.Clear()
 	End Sub
-
-	Private Sub btnBegin_Click(sender As Object, e As EventArgs) Handles btnBegin.Click
+    '*** Begin button
+    Private Sub btnBegin_Click(sender As Object, e As EventArgs) Handles btnBegin.Click
 		'*** Turn game progression on
 		GameRun = True
 		'*** Choose randomly what player begins
@@ -165,8 +169,8 @@
 			End If
 		Next
 	End Sub
-
-	Private Sub btnStop_Click(sender As Object, e As EventArgs) Handles btnStop.Click
+    '*** Stop button
+    Private Sub btnStop_Click(sender As Object, e As EventArgs) Handles btnStop.Click
 		'*** Turn game progression off
 		GameRun = False
 		'*** Disable / enable appropriate controls
@@ -180,8 +184,12 @@
 			End If
 		Next
 	End Sub
-
-	Private Sub grpSelectie_TextBox_MouseEnter(sender As TextBox, e As EventArgs)
+    '*** Menu button
+    Private Sub btnMenu_Click(sender As Object, e As EventArgs) Handles btnMenu.Click
+        Me.Close()
+    End Sub
+    '*** Mouse enter playfields
+    Private Sub grpSelectie_TextBox_MouseEnter(sender As TextBox, e As EventArgs)
 		'*** Make function only run when game progression is on
 		If (GameRun = False) Then
 			Exit Sub
@@ -197,8 +205,8 @@
 			tb.BackColor = Color.YellowGreen
 		End If
 	End Sub
-
-	Private Sub grpSelectie_TextBox_MouseLeave(sender As TextBox, e As EventArgs)
+    '*** Mouse leave playfields
+    Private Sub grpSelectie_TextBox_MouseLeave(sender As TextBox, e As EventArgs)
 		'*** Search for preview
 		Dim tb As TextBox = GetHighestPlayerField(sender)
 		'*** If he lowest field is indeed a preview, set it to white
@@ -208,8 +216,8 @@
 		'*** Make the selection field white
 		sender.BackColor = Color.White
 	End Sub
-
-	Private Sub grpSelectie_TextBox_MouseClick(sender As TextBox, e As EventArgs)
+    '*** Mouse click playfields
+    Private Sub grpSelectie_TextBox_MouseClick(sender As TextBox, e As EventArgs)
 		'*** If the clicked field is white, cancel
 		If sender.BackColor = Color.White Then
 			Exit Sub
@@ -231,8 +239,8 @@
 		tb.Text = " "
 
 	End Sub
-
-	Function GetLowestEmptyField(Beginbox As TextBox) As TextBox
+    '*** Gettingthe lowest empty field
+    Function GetLowestEmptyField(Beginbox As TextBox) As TextBox
 		'*** Create verifaction data
 		Dim Name As String = Beginbox.Name.Split("Y")(0)
 		'*** Check all fields in a row and return the lowest not verified field
@@ -247,8 +255,8 @@
 		Next
 		Return Beginbox
 	End Function
-
-	Function GetHighestPlayerField(Beginbox As TextBox) As TextBox
+    '*** Getting highest played field
+    Function GetHighestPlayerField(Beginbox As TextBox) As TextBox
 		'*** Declaration of variables
 		Dim tb As TextBox = Beginbox
 		Dim Name As String = Beginbox.Name.Split("Y")(0)
@@ -268,8 +276,8 @@
 		'*** If there is no preview return itself
 		Return Beginbox
 	End Function
-
-	Private Sub EndRound(PlayedField As TextBox)
+    '*** Endround
+    Private Sub EndRound(PlayedField As TextBox)
 		'*** Declaration of winner variable
 		Dim strPoint As String = PointCheck(PlayedField)
 		'*** Get sender
@@ -287,118 +295,119 @@
 			Case "Yellow"
 				Exit Select
 			Case Else
-				'*** Switch player color
-				Beurtwissel()
-				For Each tb As TextBox In grbSelectie.Controls
-					tb.Enabled = True
-				Next
-				Exit Sub
-		End Select
-		GameRun = False
-		'*** Empty all selection controls
-		For Each tb As TextBox In grbSelectie.Controls
-			tb.Clear()
-			tb.Enabled = False
-		Next
-		'*** Show who won
-		lblWinner.Text = strPoint & " Wins"
-		'*** Simulate a new mouse enter event
-		grpSelectie_TextBox_MouseEnter(sender, New EventArgs())
-	End Sub
+                '*** Switch player color
+                RoleSwap()
+                For Each tb As TextBox In grbSelectie.Controls
+                    tb.Enabled = True
+                Next
+                Exit Sub
+        End Select
+        GameRun = False
+        '*** Empty all selection controls
+        For Each tb As TextBox In grbSelectie.Controls
+            tb.Clear()
+            tb.Enabled = False
+        Next
+        '*** Show who won
+        lblWinner.Text = strPoint & " Wins"
+        '*** Simulate a new mouse enter event
+        grpSelectie_TextBox_MouseEnter(sender, New EventArgs())
+    End Sub
+    '*** Pointcheck
+    Function PointCheck(PlayedField As TextBox) As String
+        '*** Make viables to manage coördinates or points
+        Dim Point As String = "No Point"
+        Dim PFCoords As String = PlayedField.Name.Split("X")(1)
+        Dim PFNameX As String = PlayedField.Name.Split("X")(0) & "X"
+        Dim PFNameY As String = PlayedField.Name.Split("Y")(0) & "Y"
+        Dim PFX As Integer = CInt(PFCoords.Split("Y")(0))
+        Dim PFY As Integer = CInt(PFCoords.Split("Y")(1))
+        Dim Check(3, 6) As String
+        Dim tb As TextBox
+        '*** Build Checklist for all directions
+        For i = PFX - 3 To PFX + 3 Step 1
+            For Each obj As Object In grbVeld.Controls
+                If TypeOf obj Is TextBox Then
+                    tb = obj
+                    '*** Horizontal check Check(0,x)
+                    If tb.Name = PFNameX & CStr(i) & "Y" & PFY Then
+                        Check(0, ((i - PFX) + 3)) = tb.Name
+                    End If
+                    '*** Diagonal check / Check(1,x)
+                    If tb.Name = PFNameX & CStr(i) & "Y" & (PFY + (i - PFX)) Then
+                        Check(1, ((i - PFX) + 3)) = tb.Name
+                    End If
+                    '*** Diagonal check \ Check(2,x)
+                    If tb.Name = PFNameX & CStr(i) & "Y" & (PFY - (i - PFX)) Then
+                        Check(2, ((i - PFX) + 3)) = tb.Name
+                    End If
+                End If
+            Next
+        Next
+        '*** Vertical check Check(3,x)
+        For i = PFY - 3 To PFY + 3 Step 1
+            For Each obj As Object In grbVeld.Controls
+                If TypeOf obj Is TextBox Then
+                    tb = obj
+                    If tb.Name = PFNameY & CStr(i) Then
+                        Check(3, ((i - PFY) + 3)) = tb.Name
+                    End If
+                End If
+            Next
+        Next
+        '*** Declaration of variables to count point streaks
+        Dim CurColor As Color = txtBeurt.BackColor
+        Dim Count As Integer = 0
+        Dim Winner(6) As String
+        '*** Check all checklists if a player has won
+        For i = 0 To 3 Step 1
+            For j = 0 To 6 Step 1
+                For Each obj As Object In grbVeld.Controls
+                    If TypeOf obj Is TextBox Then
+                        tb = obj
+                        If tb.Name = Check(i, j) Then
+                            '*** Check if the played field has the same color as the player
+                            If tb.BackColor = CurColor Then
+                                '*** Add field to point count, point + 1
+                                Winner(Count) = tb.Name
+                                Count += 1
+                            Else
+                                '*** Reset point count to 0
+                                Count = 0
+                            End If
+                            '*** If 4 or more points are made, mark them
+                            If Count >= 4 Then
+                                '*** Change all point containing fields to green
+                                For k = 0 To Count - 1 Step 1
+                                    For Each ob As Object In grbVeld.Controls
+                                        If TypeOf ob Is TextBox Then
+                                            tb = ob
+                                            If tb.Name = Winner(k) Then
+                                                tb.BackColor = Color.Green
+                                            End If
+                                        End If
+                                    Next
+                                Next
+                                '*** Set winner name
+                                Point = CurColor.ToString.Split("]")(0).Split("[")(1)
+                            End If
+                        End If
+                    End If
+                Next
+            Next
+            Count = 0
+        Next
+        '*** Return winner
+        Return Point
+    End Function
+    '*** Roleswap
+    Private Sub RoleSwap()
+        '*** Change current active player
+        If txtBeurt.BackColor = Color.Yellow Then
+            txtBeurt.BackColor = Color.Red
+        Else
+            txtBeurt.BackColor = Color.Yellow
+        End If
+    End Sub
 
-	Function PointCheck(PlayedField As TextBox) As String
-		'*** Make viables to manage coördinates or points
-		Dim Point As String = "No Point"
-		Dim PFCoords As String = PlayedField.Name.Split("X")(1)
-		Dim PFNameX As String = PlayedField.Name.Split("X")(0) & "X"
-		Dim PFNameY As String = PlayedField.Name.Split("Y")(0) & "Y"
-		Dim PFX As Integer = CInt(PFCoords.Split("Y")(0))
-		Dim PFY As Integer = CInt(PFCoords.Split("Y")(1))
-		Dim Check(3, 6) As String
-		Dim tb As TextBox
-		'*** Build Checklist for all directions
-		For i = PFX - 3 To PFX + 3 Step 1
-			For Each obj As Object In grbVeld.Controls
-				If TypeOf obj Is TextBox Then
-					tb = obj
-					'*** Horizontal check Check(0,x)
-					If tb.Name = PFNameX & CStr(i) & "Y" & PFY Then
-						Check(0, ((i - PFX) + 3)) = tb.Name
-					End If
-					'*** Diagonal check / Check(1,x)
-					If tb.Name = PFNameX & CStr(i) & "Y" & (PFY + (i - PFX)) Then
-						Check(1, ((i - PFX) + 3)) = tb.Name
-					End If
-					'*** Diagonal check \ Check(2,x)
-					If tb.Name = PFNameX & CStr(i) & "Y" & (PFY - (i - PFX)) Then
-						Check(2, ((i - PFX) + 3)) = tb.Name
-					End If
-				End If
-			Next
-		Next
-		'*** Vertical check Check(3,x)
-		For i = PFY - 3 To PFY + 3 Step 1
-			For Each obj As Object In grbVeld.Controls
-				If TypeOf obj Is TextBox Then
-					tb = obj
-					If tb.Name = PFNameY & CStr(i) Then
-						Check(3, ((i - PFY) + 3)) = tb.Name
-					End If
-				End If
-			Next
-		Next
-		'*** Declaration of variables to count point streaks
-		Dim CurColor As Color = txtBeurt.BackColor
-		Dim Count As Integer = 0
-		Dim Winner(6) As String
-		'*** Check all checklists if a player has won
-		For i = 0 To 3 Step 1
-			For j = 0 To 6 Step 1
-				For Each obj As Object In grbVeld.Controls
-					If TypeOf obj Is TextBox Then
-						tb = obj
-						If tb.Name = Check(i, j) Then
-							'*** Check if the played field has the same color as the player
-							If tb.BackColor = CurColor Then
-								'*** Add field to point count, point + 1
-								Winner(Count) = tb.Name
-								Count += 1
-							Else
-								'*** Reset point count to 0
-								Count = 0
-							End If
-							'*** If 4 or more points are made, mark them
-							If Count >= 4 Then
-								'*** Change all point containing fields to green
-								For k = 0 To Count - 1 Step 1
-									For Each ob As Object In grbVeld.Controls
-										If TypeOf ob Is TextBox Then
-											tb = ob
-											If tb.Name = Winner(k) Then
-												tb.BackColor = Color.Green
-											End If
-										End If
-									Next
-								Next
-								'*** Set winner name
-								Point = CurColor.ToString.Split("]")(0).Split("[")(1)
-							End If
-						End If
-					End If
-				Next
-			Next
-			Count = 0
-		Next
-		'*** Return winner
-		Return Point
-	End Function
-
-	Private Sub Beurtwissel()
-		'*** Change current active player
-		If txtBeurt.BackColor = Color.Yellow Then
-			txtBeurt.BackColor = Color.Red
-		Else
-			txtBeurt.BackColor = Color.Yellow
-		End If
-	End Sub
 End Class

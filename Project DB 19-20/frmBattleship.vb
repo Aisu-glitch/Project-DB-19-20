@@ -31,7 +31,6 @@
 
     Private Sub dd_enter(sender As PictureBox, e As DragEventArgs)
         If (e.Data.GetDataPresent(DataFormats.Bitmap)) Then
-            '---determine if this is a copy or move---
             e.Effect = DragDropEffects.Move
             If sender.Image Is Nothing Then
                 sender.Image = e.Data.GetData(DataFormats.Bitmap)
@@ -39,10 +38,8 @@
         End If
     End Sub
 
-    Private Sub dd_leave(sender As PictureBox, e As EventArgs, de As DragEventArgs)
-        If sender IsNot de.Data.GetData(D) Then
-            sender.Image = Nothing
-        End If
+    Private Sub dd_leave(sender As PictureBox, e As EventArgs)
+        sender.Image = Nothing
     End Sub
 
     'https://stackoverflow.com/questions/51560830/show-dragged-item-while-dragging-vb-net

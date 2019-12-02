@@ -80,6 +80,7 @@ Partial Class frmConnect4
         Me.grbSelectie = New System.Windows.Forms.GroupBox()
         Me.lblWinner = New System.Windows.Forms.Label()
         Me.Timer = New System.Windows.Forms.Timer(Me.components)
+        Me.btnMenu = New System.Windows.Forms.Button()
         Me.grbVeld.SuspendLayout()
         Me.grbSelectie.SuspendLayout()
         Me.SuspendLayout()
@@ -735,26 +736,32 @@ Partial Class frmConnect4
         '
         'btnStop
         '
+        Me.btnStop.BackColor = System.Drawing.SystemColors.HighlightText
         Me.btnStop.Enabled = False
+        Me.btnStop.FlatAppearance.BorderSize = 0
+        Me.btnStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnStop.ForeColor = System.Drawing.SystemColors.ControlText
         Me.btnStop.Location = New System.Drawing.Point(982, 293)
         Me.btnStop.Name = "btnStop"
         Me.btnStop.Size = New System.Drawing.Size(75, 23)
         Me.btnStop.TabIndex = 50
         Me.btnStop.Text = "Stop"
-        Me.btnStop.UseVisualStyleBackColor = True
+        Me.btnStop.UseVisualStyleBackColor = False
         '
         'btnBegin
         '
+        Me.btnBegin.BackColor = System.Drawing.SystemColors.HighlightText
         Me.btnBegin.BackgroundImage = CType(resources.GetObject("btnBegin.BackgroundImage"), System.Drawing.Image)
         Me.btnBegin.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
         Me.btnBegin.FlatAppearance.BorderSize = 0
-        Me.btnBegin.FlatStyle = System.Windows.Forms.FlatStyle.System
+        Me.btnBegin.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnBegin.ForeColor = System.Drawing.SystemColors.ControlText
         Me.btnBegin.Location = New System.Drawing.Point(982, 264)
         Me.btnBegin.Name = "btnBegin"
         Me.btnBegin.Size = New System.Drawing.Size(75, 23)
         Me.btnBegin.TabIndex = 51
         Me.btnBegin.Text = "Begin"
-        Me.btnBegin.UseVisualStyleBackColor = True
+        Me.btnBegin.UseVisualStyleBackColor = False
         '
         'grbVeld
         '
@@ -838,25 +845,38 @@ Partial Class frmConnect4
         Me.Timer.Enabled = True
         Me.Timer.Interval = 1
         '
+        'btnMenu
+        '
+        Me.btnMenu.BackColor = System.Drawing.SystemColors.HighlightText
+        Me.btnMenu.FlatAppearance.BorderSize = 0
+        Me.btnMenu.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnMenu.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.btnMenu.Location = New System.Drawing.Point(982, 579)
+        Me.btnMenu.Name = "btnMenu"
+        Me.btnMenu.Size = New System.Drawing.Size(75, 23)
+        Me.btnMenu.TabIndex = 55
+        Me.btnMenu.Text = "Menu"
+        Me.btnMenu.UseVisualStyleBackColor = False
+        '
         'frmConnect4
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.SystemColors.MenuHighlight
         Me.ClientSize = New System.Drawing.Size(1106, 731)
+        Me.Controls.Add(Me.btnMenu)
         Me.Controls.Add(Me.lblWinner)
         Me.Controls.Add(Me.grbSelectie)
         Me.Controls.Add(Me.grbVeld)
         Me.Controls.Add(Me.btnBegin)
         Me.Controls.Add(Me.btnStop)
         Me.Controls.Add(Me.txtBeurt)
-        Me.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.ForeColor = System.Drawing.Color.Transparent
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmConnect4"
         Me.Text = "VierOpEenRij"
-        Me.TopMost = True
         Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         Me.grbVeld.ResumeLayout(False)
         Me.grbVeld.PerformLayout()
@@ -923,4 +943,5 @@ Partial Class frmConnect4
     Friend WithEvents lblWinner As Label
     Friend WithEvents Timer As Timer
     Private WithEvents btnBegin As Button
+    Friend WithEvents btnMenu As Button
 End Class
