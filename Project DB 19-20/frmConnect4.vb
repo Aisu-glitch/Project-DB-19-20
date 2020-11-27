@@ -357,48 +357,52 @@
         Next
         '*** Declaration of variables to count point streaks
         Dim CurColor As Color = txtBeurt.BackColor
-        Dim Count As Integer = 0
-        Dim Winner(6) As String
-        '*** Check all checklists if a player has won
-        For i = 0 To 3 Step 1
-            For j = 0 To 6 Step 1
-                For Each obj As Object In grbVeld.Controls
-                    If TypeOf obj Is TextBox Then
-                        tb = obj
-                        If tb.Name = Check(i, j) Then
-                            '*** Check if the played field has the same color as the player
-                            If tb.BackColor = CurColor Then
-                                '*** Add field to point count, point + 1
-                                Winner(Count) = tb.Name
-                                Count += 1
-                            Else
-                                '*** Reset point count to 0
-                                Count = 0
-                            End If
-                            '*** If 4 or more points are made, mark them
-                            If Count >= 4 Then
-                                '*** Change all point containing fields to green
-                                For k = 0 To Count - 1 Step 1
-                                    For Each ob As Object In grbVeld.Controls
-                                        If TypeOf ob Is TextBox Then
-                                            tb = ob
-                                            If tb.Name = Winner(k) Then
-                                                tb.BackColor = Color.Green
-                                            End If
-                                        End If
-                                    Next
-                                Next
-                                '*** Set winner name
-                                Point = CurColor.ToString.Split("]")(0).Split("[")(1)
-                            End If
-                        End If
-                    End If
-                Next
-            Next
-            Count = 0
-        Next
-        '*** Return winner
-        Return Point
+		Dim Count As Integer = 0
+		Dim WinnerTemp(6) As String
+		Dim Winners(6) As String
+		'*** Check all checklists if a player has won
+		For i = 0 To 3 Step 1
+			For j = 0 To 6 Step 1
+				For Each obj As Object In grbVeld.Controls
+					If TypeOf obj Is TextBox Then
+						tb = obj
+						If tb.Name = Check(i, j) Then
+							'*** Check if the played field has the same color as the player
+							If tb.BackColor = CurColor Then
+								'*** Add field to point count, point + 1
+								WinnerTemp(Count) = tb.Name
+								Count += 1
+							Else
+								'*** Reset point count to 0
+								WinnerTemp(Count) = ""
+								Count = 0
+							End If
+							'*** If 4 or more points are made, mark them
+							If Count >= 4 Then
+								Array.Resize(Of String)(Winners, Winners.Length + WinnerTemp.Length + 1)
+								Array.Copy(Winners, 0, WinnerTemp, Winners.Length + 1, WinnerTemp.Length)
+								'*** Set winner name
+								Point = CurColor.ToString.Split("]")(0).Split("[")(1)
+							End If
+						End If
+					End If
+				Next
+			Next
+			Count = 0
+		Next
+		'*** Change all point containing fields to green
+		For k = 0 To Count - 1 Step 1
+			For Each ob As Object In grbVeld.Controls
+				If TypeOf ob Is TextBox Then
+					tb = ob
+					If tb.Name = Winners(k) Then
+						tb.BackColor = Color.Green
+					End If
+				End If
+			Next
+		Next
+		'*** Return winner
+		Return Point
     End Function
     '*** Roleswap
     Private Sub RoleSwap()
