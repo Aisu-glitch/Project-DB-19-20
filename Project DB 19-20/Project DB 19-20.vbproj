@@ -137,11 +137,5 @@
     </None>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\Buttonshape_IRC.png" />
-    <Content Include="Resources\Buttonshape_R.png" />
-    <Content Include="Resources\Buttonshape_RC.png" />
-    <Content Include="Resources\Buttonshape_Shaved.png" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
