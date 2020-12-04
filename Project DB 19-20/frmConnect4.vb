@@ -249,7 +249,9 @@
 		For i = 0 To 5 Step 1
 			For Each tb As Control In grbVeld.Controls
 				If TypeOf tb Is TextBox Then
-					If tb.Name = Name & "Y" & CStr(i) And tb.BackColor.ToArgb = Color.White.ToArgb And tb.Name <> " " Then
+					If tb.Name = Name & "Y" & CStr(i) AndAlso
+						tb.BackColor.ToArgb = Color.White.ToArgb AndAlso
+						tb.Name <> " " Then
 						Return tb
 					End If
 				End If
@@ -291,20 +293,27 @@
 			End If
 		Next
 		'*** Check who made a point, if noone skip to next round
-		Select Case strPoint
-			Case "Red"
-				Exit Select
-			Case "Yellow"
-				Exit Select
-			Case Else
-                '*** Switch player color
-                RoleSwap()
-                For Each tb As TextBox In grbSelectie.Controls
-                    tb.Enabled = True
-                Next
-                Exit Sub
-        End Select
-        GameRun = False
+		If (strPoint = "No Point") Then
+			'*** Switch player color
+			RoleSwap()
+			For Each tb As TextBox In grbSelectie.Controls
+				tb.Enabled = True
+			Next
+			Exit Sub
+		ElseIf (strPoint = "Draw") Then
+			GameRun = False
+			'*** Empty all selection controls
+			For Each tb As TextBox In grbSelectie.Controls
+				tb.Clear()
+				tb.Enabled = False
+			Next
+			'*** Show who won
+			lblWinner.Text = strPoint
+			'*** Simulate a new mouse enter event
+			grpSelectie_TextBox_MouseEnter(sender, New EventArgs())
+			Exit Sub
+		End If
+		GameRun = False
         '*** Empty all selection controls
         For Each tb As TextBox In grbSelectie.Controls
             tb.Clear()
@@ -317,8 +326,8 @@
     End Sub
     '*** Pointcheck
     Function PointCheck(PlayedField As TextBox) As String
-        '*** Make viables to manage coördinates or points
-        Dim Point As String = "No Point"
+		'*** Make variables to manage coördinates or points
+		Dim Point As String = "No Point"
         Dim PFCoords As String = PlayedField.Name.Split("X")(1)
         Dim PFNameX As String = PlayedField.Name.Split("X")(0) & "X"
         Dim PFNameY As String = PlayedField.Name.Split("Y")(0) & "Y"
@@ -331,23 +340,23 @@
             For Each obj As Object In grbVeld.Controls
                 If TypeOf obj Is TextBox Then
                     tb = obj
-                    '*** Horizontal check Check(0,x)
-                    If tb.Name = PFNameX & CStr(i) & "Y" & PFY Then
+					'*** Horizontal		Check(0,x)
+					If tb.Name = PFNameX & CStr(i) & "Y" & PFY Then
                         Check(0, ((i - PFX) + 3)) = tb.Name
                     End If
-                    '*** Diagonal check / Check(1,x)
-                    If tb.Name = PFNameX & CStr(i) & "Y" & (PFY + (i - PFX)) Then
+					'*** Diagonal /		Check(1,x)
+					If tb.Name = PFNameX & CStr(i) & "Y" & (PFY + (i - PFX)) Then
                         Check(1, ((i - PFX) + 3)) = tb.Name
                     End If
-                    '*** Diagonal check \ Check(2,x)
-                    If tb.Name = PFNameX & CStr(i) & "Y" & (PFY - (i - PFX)) Then
+					'*** Diagonal \		Check(2,x)
+					If tb.Name = PFNameX & CStr(i) & "Y" & (PFY - (i - PFX)) Then
                         Check(2, ((i - PFX) + 3)) = tb.Name
                     End If
                 End If
             Next
         Next
-        '*** Vertical check Check(3,x)
-        For i = PFY - 3 To PFY + 3 Step 1
+		'*** Vertical		Check(3,x)
+		For i = PFY - 3 To PFY + 3 Step 1
             For Each obj As Object In grbVeld.Controls
                 If TypeOf obj Is TextBox Then
                     tb = obj
@@ -410,6 +419,19 @@
 				End If
 			End If
 		Next
+		If (Point = "No Point") Then
+			For Each obj As Object In grbVeld.Controls
+				If TypeOf obj Is TextBox Then
+					tb = obj
+					If tb.Name.Split("Y")(1) = 5 And tb.BackColor.ToArgb <> Color.White.ToArgb Then
+						Count += 1
+					End If
+				End If
+			Next
+			If Count = 7 Then
+				Point = "Draw"
+			End If
+		End If
 		'*** Return winner
 		Return Point
 	End Function
