@@ -116,6 +116,7 @@
 			g.FillEllipse(New SolidBrush(Color.White), New Rectangle(0, Ystart - 8, 50, 50))
 			g.DrawPie(Pen, Size, 0, 0)
 			g.FillEllipse(Brush, Size)
+
 			'*** Check if it is the last field
 			If Name = endbox.Name Then
 				'*** Check if last field has his disc yet to be centered
@@ -158,6 +159,7 @@
 			If TypeOf obj Is TextBox Then
 				tb = obj
 				tb.Enabled = True
+				tb.Tag = ""
 				tb.BackColor = Color.White
 			End If
 		Next
@@ -281,7 +283,7 @@
 		'*** Declaration of winner variable
 		Dim strPoint As String = PointCheck(PlayedField)
 		'*** Get sender
-		Dim sender As TextBox
+		Dim sender As TextBox = New TextBox()
 		For Each tb As TextBox In grbSelectie.Controls
 			tb.Enabled = True
 			If tb.Name.Split("Y")(0) = PlayedField.Name.Split("Y")(0) Then
@@ -379,13 +381,13 @@
 							End If
 							'*** If 4 or more points are made, mark them
 							If Count >= 4 Then
-								'*** Change all point containing fields to green
+								'*** Mark all point containing fields
 								For k = 0 To Count - 1 Step 1
 									For Each ob As Object In grbVeld.Controls
 										If TypeOf ob Is TextBox Then
 											tb = ob
 											If tb.Name = Winner(k) Then
-												tb.BackColor = Color.Green
+												tb.Tag = "1"
 											End If
 										End If
 									Next
@@ -398,6 +400,15 @@
 				Next
 			Next
 			Count = 0
+		Next
+		'*** color all the winnen fields
+		For Each obj As Object In grbVeld.Controls
+			If TypeOf obj Is TextBox Then
+				tb = obj
+				If tb.Tag = "1" Then
+					tb.BackColor = Color.Green
+				End If
+			End If
 		Next
 		'*** Return winner
 		Return Point

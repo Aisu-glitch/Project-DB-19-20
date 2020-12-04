@@ -33,7 +33,7 @@ Partial Class frmMenu
 		'
 		'btnConnect4
 		'
-		btnConnect4.BackColor = System.Drawing.SystemColors.HighlightText
+		btnConnect4.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(0, Byte), Integer))
 		btnConnect4.BackgroundImage = CType(resources.GetObject("btnConnect4.BackgroundImage"), System.Drawing.Image)
 		btnConnect4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
 		btnConnect4.FlatAppearance.BorderSize = 0
@@ -49,7 +49,7 @@ Partial Class frmMenu
 		'
 		'btnBattleship
 		'
-		btnBattleship.BackColor = System.Drawing.SystemColors.HighlightText
+		btnBattleship.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(0, Byte), Integer))
 		btnBattleship.BackgroundImage = CType(resources.GetObject("btnBattleship.BackgroundImage"), System.Drawing.Image)
 		btnBattleship.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
 		btnBattleship.FlatAppearance.BorderSize = 0
@@ -65,7 +65,7 @@ Partial Class frmMenu
 		'
 		'btnClose
 		'
-		btnClose.BackColor = System.Drawing.SystemColors.HighlightText
+		btnClose.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(0, Byte), Integer))
 		btnClose.BackgroundImage = CType(resources.GetObject("btnClose.BackgroundImage"), System.Drawing.Image)
 		btnClose.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
 		btnClose.FlatAppearance.BorderSize = 0
